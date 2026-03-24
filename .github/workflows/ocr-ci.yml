@@ -1,0 +1,25 @@
+name: OCR CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build OCR Docker image
+        run: docker build -t ocr-service:latest .
+
+      - name: Run flake8 in Docker
+        run: docker run --rm ocr-service:latest sh -c "pip install -q flake8; flake8 /app"
+
+      - name: Run OCR tests in Docker
+        run: docker run --rm ocr-service:latest sh -c "pip install -q pytest; pytest -q /app/testOCR.py"

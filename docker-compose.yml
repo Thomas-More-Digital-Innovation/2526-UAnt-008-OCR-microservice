@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  ocr-service:
+    build: .
+    environment:
+      - PORT=${PORT:-8000}
+    expose:
+      - ${PORT:-8000}
+    ports:
+      - "${PORT:-8000}:${PORT:-8000}"
