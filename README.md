@@ -17,4 +17,4 @@ An OCR service to get text of images. Hosted in a docker.
 5. Stuur een POST request naar `/ocr?method=easyocr` of `/ocr?method=tesseract` met een afbeelding.
 6. Je krijgt de herkende tekst als JSON terug.
 
-Gemaakt door Maurits Groen
+Made by Maurits Groen
