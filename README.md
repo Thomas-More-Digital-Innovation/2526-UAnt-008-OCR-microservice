@@ -1,6 +1,6 @@
 # OCR_SERVICE
 # General information
-An OCR service to get text of images. Hosted in a docker.
+An OCR service to get text of images. Hosted in a docker. The Python code is written in PEP8.
 
 ## Usage of OCR service
 1. Clone deze repository naar je lokale machine.
