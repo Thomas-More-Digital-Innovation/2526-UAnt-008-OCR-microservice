@@ -1,4 +1,8 @@
 # OCR_SERVICE
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/677d879c-7a61-4eff-9e00-28c08e4bda32" width="300"/>
+</p>
+
 # General information
 An OCR service to get text of images. Hosted in a docker. The Python code is written in PEP8 style.
 
