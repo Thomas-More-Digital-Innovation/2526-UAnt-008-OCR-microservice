@@ -99,6 +99,7 @@ async def ocr_path(image: str, method: str = 'easyocr'):
     except Exception as e:
         return {'error': str(e)}
 
+
 # Endpoint with a test image
 @app.get('/test_image')
 async def test_image():
