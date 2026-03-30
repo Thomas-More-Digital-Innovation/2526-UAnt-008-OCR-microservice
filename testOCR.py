@@ -53,8 +53,7 @@ def test_tesseract_file():
 def test_easyocr_path():
     image_url = 'http://localhost:8000/test_image'
     response = client.post(
-        '/ocr/path?method=easyocr',
-        json={'image': image_url}
+        f'/ocr/path?method=easyocr&image={image_url}'
     )
     assert response.status_code == 200
     body = response.json()
@@ -66,8 +65,7 @@ def test_easyocr_path():
 def test_tesseract_path():
     image_url = 'http://localhost:8000/test_image'
     response = client.post(
-        '/ocr/path?method=tesseract',
-        json={'image': image_url}
+        f'/ocr/path?method=tesseract&image={image_url}'
     )
     assert response.status_code == 200
     body = response.json()
