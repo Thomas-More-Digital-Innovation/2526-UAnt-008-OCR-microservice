@@ -47,3 +47,29 @@ def test_tesseract_file():
     body = response.json()
     assert 'error' not in body
     assert isinstance(body.get('text'), str)
+
+
+# Test the easyocr endpoint with an image path
+def test_easyocr_path():
+    image_url = 'http://localhost:8000/test_image'
+    response = client.post(
+        '/ocr/path?method=easyocr',
+        json={'image': image_url}
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert 'error' not in body
+    assert isinstance(body.get('text'), str)
+
+
+# Test the tesseract endpoint with an image path
+def test_tesseract_path():
+    image_url = 'http://localhost:8000/test_image'
+    response = client.post(
+        '/ocr/path?method=tesseract',
+        json={'image': image_url}
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert 'error' not in body
+    assert isinstance(body.get('text'), str)

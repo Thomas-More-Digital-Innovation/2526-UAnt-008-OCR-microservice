@@ -18,7 +18,7 @@ An OCR service to get text of images. Hosted in a docker. The Python code is wri
    ```env
    PORT=12345
    ```
-5. Send a POST request to `/ocr?method=easyocr` or `/ocr?method=tesseract` with an image.
-6. You will receive the recognized text as JSON.
+5. POST to `/ocr/file` with an image file (upload) or to `/ocr/path` with an image URL. Choose `method=easyocr` or `method=tesseract`.
+6. You always get a JSON response with the recognized text field.
 
 Made by Maurits Groen
