@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from PIL import Image
 import requests
 from fastapi import FastAPI, UploadFile, File
+from fastapi.responses import FileResponse
 import io
 import easyocr
 import pytesseract
@@ -97,3 +98,9 @@ async def ocr_path(image: str, method: str = 'easyocr'):
         return {'text': text}
     except Exception as e:
         return {'error': str(e)}
+
+# Endpoint with a test image
+@app.get('/test_image')
+async def test_image():
+    image_path = '/app/TEST.Png'
+    return FileResponse(image_path, media_type='image/png')

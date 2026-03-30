@@ -26,9 +26,9 @@ def _sample_png_bytes(text='TEST'):
 
 
 # Test the easyocr endpoint with an image
-def test_easyocr():
+def test_easyocr_file():
     response = client.post(
-        '/ocr?method=easyocr',
+        '/ocr/file?method=easyocr',
         files={'image': ('ocr-test.png', _sample_png_bytes(), 'image/png')},
     )
     assert response.status_code == 200
@@ -38,9 +38,9 @@ def test_easyocr():
 
 
 # Test the tesseract endpoint with an image
-def test_tesseract():
+def test_tesseract_file():
     response = client.post(
-        '/ocr?method=tesseract',
+        '/ocr/file?method=tesseract',
         files={'image': ('ocr-test.png', _sample_png_bytes(), 'image/png')},
     )
     assert response.status_code == 200
