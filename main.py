@@ -93,7 +93,6 @@ async def ocr_path(image: str, method: str = 'easyocr'):
     if method not in ocr_readers:
         return {'error': f'Unsupported OCR method: {method}'}
     try:
-        # Probeer de image-URL te verwerken met de gekozen OCR-methode
         text = ocr_readers[method].read_text(image, 'path')
         return {'text': text}
     except Exception as e:
