@@ -51,7 +51,7 @@ def test_tesseract_file():
 
 # Test the easyocr endpoint with an image path
 def test_easyocr_path():
-    image_url = 'http://localhost:8000/test_image'
+    image_url = 'https://cataas.com/cat/says/test'
     response = client.post(
         f'/ocr/path?method=easyocr&image={image_url}'
     )
@@ -63,7 +63,7 @@ def test_easyocr_path():
 
 # Test the tesseract endpoint with an image path
 def test_tesseract_path():
-    image_url = 'http://localhost:8000/test_image'
+    image_url = 'https://cataas.com/cat/says/test'
     response = client.post(
         f'/ocr/path?method=tesseract&image={image_url}'
     )
