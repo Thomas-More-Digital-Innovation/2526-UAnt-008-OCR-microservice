@@ -4,3 +4,4 @@ pytesseract
 easyocr
 python-multipart
 httpx
+requests

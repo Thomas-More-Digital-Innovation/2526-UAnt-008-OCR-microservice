@@ -1,6 +1,7 @@
 # #################   IMPORTS AND INITIALIZATION    ########################
 from abc import ABC, abstractmethod
 from PIL import Image
+import requests
 from fastapi import FastAPI, UploadFile, File
 import io
 import easyocr
@@ -13,7 +14,7 @@ app = FastAPI()
 class BaseOCR(ABC):
     """Abstact base class for OCR implementations"""
     @abstractmethod
-    def read_text(self, image) -> str:
+    def read_text(self, image, type) -> str:
         pass
 
 
@@ -22,7 +23,13 @@ class EasyOCR(BaseOCR):
     def __init__(self):
         self.reader = easyocr.Reader(['en', 'fr', 'de', 'it', 'nl'], gpu=False)
 
-    def read_text(self, image) -> str:
+    def read_text(self, image, type) -> str:
+        # If input is URL path, fetch the image content first
+        if type == 'path':
+            response = requests.get(image)
+            response.raise_for_status()
+            image = response.content
+
         result = self.reader.readtext(image)
         text_only = ' '.join(text for bbox, text, conf in result)
         return text_only
@@ -33,7 +40,14 @@ class TesseractOCR(BaseOCR):
     def __init__(self):
         self.pytesseract = pytesseract
 
-    def read_text(self, image) -> str:
+    def read_text(self, image, type) -> str:
+        # If input is URL path, fetch the image content first
+        if type == 'path':
+            response = requests.get(image)
+            response.raise_for_status()
+            image = Image.open(io.BytesIO(response.content))
+            image.load()
+
         text_only = self.pytesseract.image_to_string(
             image,
             lang='eng+nld+deu+ita+fra')
@@ -53,19 +67,33 @@ async def root():
     return {'text': 'The OCR service is running!'}
 
 
-@app.post('/ocr')
-async def ocr(image: UploadFile = File(...), method: str = 'easyocr'):
+# Endpoint to upload image file for OCR processing
+@app.post('/ocr/file')
+async def ocr_file(image: UploadFile = File(...), method: str = 'easyocr'):
     if method not in ocr_readers:
         return {'error': f'Unsupported OCR method: {method}'}
     try:
         contents = await image.read()
 
         if method == 'easyocr':
-            text = ocr_readers[method].read_text(contents)
+            text = ocr_readers[method].read_text(contents, 'file')
         else:
             pil_image = Image.open(io.BytesIO(contents))
-            text = ocr_readers[method].read_text(pil_image)
+            text = ocr_readers[method].read_text(pil_image, 'file')
 
+        return {'text': text}
+    except Exception as e:
+        return {'error': str(e)}
+
+
+# Endpoint to give image url instead of file upload
+@app.post('/ocr/path')
+async def ocr_path(image: str, method: str = 'easyocr'):
+    if method not in ocr_readers:
+        return {'error': f'Unsupported OCR method: {method}'}
+    try:
+        # Probeer de image-URL te verwerken met de gekozen OCR-methode
+        text = ocr_readers[method].read_text(image, 'path')
         return {'text': text}
     except Exception as e:
         return {'error': str(e)}
